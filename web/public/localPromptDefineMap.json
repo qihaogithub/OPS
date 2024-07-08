@@ -1,4 +1,196 @@
 {
+ "mutated hands and fingers": {
+  "text": "Mutated hands and fingers",
+  "lang_zh": "变异的手和手指。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "missing fingers": {
+  "text": "missing fingers",
+  "lang_zh": "缺失手指",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "bad hands": {
+  "text": "bad hands",
+  "lang_zh": "不理想的手部表现",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "deformed": {
+  "text": "Deformed",
+  "lang_zh": "畸形的。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "bad anatomy": {
+  "text": "bad anatomy",
+  "lang_zh": "不准确的解剖结构",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "disfigured": {
+  "text": "Disfigured",
+  "lang_zh": "毁容。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "poorly drawn face": {
+  "text": "Poorly drawn face",
+  "lang_zh": "脸部画得不好。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "mutated": {
+  "text": "Mutated",
+  "lang_zh": "变异的。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "extra limb": {
+  "text": "Extra limb",
+  "lang_zh": "多余的肢体。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "ugly": {
+  "text": "Ugly",
+  "lang_zh": "丑陋。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "poorly drawn hands": {
+  "text": "Poorly drawn hands",
+  "lang_zh": "手部画得很差。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "missing limb": {
+  "text": "Missing limb",
+  "lang_zh": "缺少的肢体。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "floating limbs": {
+  "text": "Floating limbs",
+  "lang_zh": "漂浮的四肢。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "disconnected limbs": {
+  "text": "Disconnected limbs",
+  "lang_zh": "肢体不连贯。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "malformed hands": {
+  "text": "Malformed hands",
+  "lang_zh": "畸形的手。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "out of focus": {
+  "text": "Out of focus",
+  "lang_zh": "脱离焦点。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "long neck": {
+  "text": "Long neck",
+  "lang_zh": "长颈。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "long body": {
+  "text": "Long body",
+  "lang_zh": "身体长。",
+  "subType": "normal",
+  "dir": "反向/人物"
+ },
+ "lowres": {
+  "text": "lowres",
+  "lang_zh": "低分辨率",
+  "subType": "normal",
+  "dir": "反向/画质"
+ },
+ "worst quality": {
+  "text": "worst quality",
+  "lang_zh": "最差质量",
+  "subType": "normal",
+  "dir": "反向/画质"
+ },
+ "low quality": {
+  "text": "low quality",
+  "lang_zh": "低质量",
+  "subType": "normal",
+  "dir": "反向/画质"
+ },
+ "normal quality": {
+  "text": "normal quality",
+  "lang_zh": "普通质量",
+  "subType": "normal",
+  "dir": "反向/画质"
+ },
+ "jpeg artifacts": {
+  "text": "jpeg artifacts",
+  "lang_zh": "JPEG 压缩失真",
+  "subType": "style",
+  "dir": "画面效果/风格"
+ },
+ "blurry": {
+  "text": "blurry",
+  "lang_zh": "模糊的",
+  "subType": "style",
+  "dir": "画面效果/风格"
+ },
+ "cropped": {
+  "text": "cropped",
+  "lang_zh": "遭到裁剪",
+  "subType": "style",
+  "dir": "构图/形式"
+ },
+ "text": {
+  "text": "text",
+  "lang_zh": "文字",
+  "subType": "normal",
+  "dir": "反向/其他"
+ },
+ "error": {
+  "text": "error",
+  "lang_zh": "错误",
+  "subType": "normal",
+  "dir": "反向/其他"
+ },
+ "extra digit": {
+  "text": "extra digit",
+  "lang_zh": "多余的数字",
+  "subType": "normal",
+  "dir": "反向/其他"
+ },
+ "fewer digits": {
+  "text": "fewer digits",
+  "lang_zh": "缺少数字",
+  "subType": "normal",
+  "dir": "反向/其他"
+ },
+ "signature": {
+  "text": "signature",
+  "lang_zh": "签名",
+  "subType": "normal",
+  "dir": "反向/其他"
+ },
+ "watermark": {
+  "text": "watermark",
+  "lang_zh": "水印",
+  "subType": "normal",
+  "dir": "反向/其他"
+ },
+ "username": {
+  "text": "username",
+  "lang_zh": "用户名",
+  "subType": "normal",
+  "dir": "反向/其他"
+ },
  "streaked hair": {
   "text": "streaked hair",
   "lang_zh": "条染",
@@ -3203,12 +3395,6 @@
   "subType": "style",
   "dir": "构图/形式"
  },
- "cropped": {
-  "text": "cropped",
-  "lang_zh": "遭到裁剪",
-  "subType": "style",
-  "dir": "构图/形式"
- },
  "fake scrollbar": {
   "text": "fake scrollbar",
   "lang_zh": "假的滚动条",
@@ -3356,18 +3542,6 @@
  "sparkle": {
   "text": "sparkle",
   "lang_zh": "闪耀效果",
-  "subType": "style",
-  "dir": "画面效果/风格"
- },
- "jpeg artifacts": {
-  "text": "jpeg artifacts",
-  "lang_zh": "JPEG 压缩失真",
-  "subType": "style",
-  "dir": "画面效果/风格"
- },
- "blurry": {
-  "text": "blurry",
-  "lang_zh": "模糊的",
   "subType": "style",
   "dir": "画面效果/风格"
  },
@@ -3886,6 +4060,132 @@
   "lang_zh": "自然光",
   "subType": "style",
   "dir": "画面效果/光照"
+ },
+ "modern": {
+  "text": "modern",
+  "lang_zh": "现代",
+  "subType": "style",
+  "dir": "画风"
+ },
+ "minimalism": {
+  "text": "Minimalism",
+  "lang_zh": "极简主义",
+  "subType": "style",
+  "dir": "画风"
+ },
+ "realism": {
+  "text": "Realism",
+  "lang_zh": "现实主义",
+  "subType": "style",
+  "dir": "画风"
+ },
+ "contemporary art": {
+  "text": "Contemporary art",
+  "lang_zh": "当代艺术",
+  "subType": "style",
+  "dir": "画风"
+ },
+ "anime style": {
+  "text": "anime style",
+  "lang_zh": "动漫风格",
+  "subType": "style",
+  "dir": "画风"
+ },
+ "pixar": {
+  "text": "Pixar",
+  "lang_zh": "皮克斯",
+  "subType": "style",
+  "dir": "画风"
+ },
+ "uhd": {
+  "text": "UHD",
+  "lang_zh": "UHD",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "anatomically correct": {
+  "text": "anatomically correct",
+  "lang_zh": "解剖正确",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "accurate": {
+  "text": "accurate",
+  "lang_zh": "准确",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "textured skin": {
+  "text": "textured skin",
+  "lang_zh": "有纹理的皮肤",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "super detail": {
+  "text": "super detail",
+  "lang_zh": "超级细节",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "high details": {
+  "text": "high details",
+  "lang_zh": "高细节",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "award winning": {
+  "text": "award winning",
+  "lang_zh": "获奖",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "best quality": {
+  "text": "best quality",
+  "lang_zh": "最佳质量",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "high quality": {
+  "text": "high quality",
+  "lang_zh": "高质量",
+  "subType": "quality",
+  "dir": "质量"
+ },
+ "1080p": {
+  "text": "1080P",
+  "lang_zh": "1080P",
+  "subType": "quality",
+  "dir": "质量/画质"
+ },
+ "retina": {
+  "text": "retina",
+  "lang_zh": "视网膜",
+  "subType": "quality",
+  "dir": "质量/画质"
+ },
+ "hd": {
+  "text": "HD",
+  "lang_zh": "高清",
+  "subType": "quality",
+  "dir": "质量/画质"
+ },
+ "16k": {
+  "text": "16k",
+  "lang_zh": "16k",
+  "subType": "quality",
+  "dir": "质量/画质"
+ },
+ "8k": {
+  "text": "8k",
+  "lang_zh": "8k",
+  "subType": "quality",
+  "dir": "质量/画质"
+ },
+ "4k": {
+  "text": "4K",
+  "lang_zh": "4K",
+  "subType": "quality",
+  "dir": "质量/画质"
  },
  "--version": {
   "text": "--version",
