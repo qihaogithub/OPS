@@ -3287,6 +3287,36 @@
   "subType": "normal",
   "dir": "容貌/表情"
  },
+ "futuristic": {
+  "text": "futuristic",
+  "lang_zh": "未来派",
+  "subType": "style",
+  "dir": "未来/科幻"
+ },
+ "technological": {
+  "text": "technological",
+  "lang_zh": "技术性",
+  "subType": "style",
+  "dir": "未来/科幻"
+ },
+ "alien worlds": {
+  "text": "alien worlds",
+  "lang_zh": "外星世界",
+  "subType": "style",
+  "dir": "未来/科幻"
+ },
+ "space themes": {
+  "text": "space themes",
+  "lang_zh": "太空主题",
+  "subType": "style",
+  "dir": "未来/科幻"
+ },
+ "advanced civilizations": {
+  "text": "advanced civilizations",
+  "lang_zh": "高级文明",
+  "subType": "style",
+  "dir": "未来/科幻"
+ },
  "afterimage": {
   "text": "afterimage",
   "lang_zh": "残像",

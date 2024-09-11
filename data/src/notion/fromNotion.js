@@ -6,8 +6,7 @@ const notion = new Client({
     auth: secret.notion,
 })
 
-// database https://www.notion.so/moonvy/5ac19c115d11488f95847c9e2d789dff?v=5ce9b783b4504c23bb7b492aa70c1cfc
-let database_id = `https://www.notion.so/67c8bfac9c994614a0043a2d073b3b6b?v=6129d4531a3c4f1cb7ae57042e085370&pvs=4`
+let database_id = `67c8bfac9c994614a0043a2d073b3b6b`
 const __dirname = new URL(".", import.meta.url).pathname
 
 // let items = await fromNotion()

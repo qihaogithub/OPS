@@ -1,2 +1,0 @@
-npm run start  
-node ./data/build.js
