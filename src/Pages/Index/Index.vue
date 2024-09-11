@@ -19,12 +19,24 @@
                         :key="version.id"
                         :class="{ active: currentVersionId === version.id }"
                     >
-                        <button @click="loadVersion(version.id)">
+                        <div v-if="editingVersionId === version.id" class="version-edit">
+                            <input
+                                v-model="editingVersionName"
+                                @keyup.enter="saveVersionName(version.id)"
+                                @blur="saveVersionName(version.id)"
+                            />
+                        </div>
+                        <button v-else @click="loadVersion(version.id)">
                             <Icon icon="radix-icons:clock" /> {{ version.name }}
                         </button>
-                        <button class="delete-btn" @click="deleteVersion(version.id)">
-                            <Icon icon="radix-icons:trash" />
-                        </button>
+                        <div class="version-actions">
+                            <button class="edit-btn" @click="startEditingVersion(version)">
+                                <Icon icon="radix-icons:pencil-1" />
+                            </button>
+                            <button class="delete-btn" @click="deleteVersion(version.id)">
+                                <Icon icon="radix-icons:trash" />
+                            </button>
+                        </div>
                     </li>
                 </ul>
             </nav>
@@ -99,9 +111,42 @@
                         background-color: #e0e0e0;
                     }
 
-                    .delete-btn {
-                        margin-left: 5px;
-                        color: #ff4d4f;
+                    .version-edit {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 5px;
+
+                        input {
+                            width: 100%;
+                            padding: 2px 5px;
+                            font-size: 14px;
+                            border: 1px solid #ccc;
+                            border-radius: 3px;
+                        }
+                    }
+
+                    .version-actions {
+                        display: flex;
+                        align-items: center;
+
+                        .edit-btn,
+                        .delete-btn {
+                            padding: 2px;
+                            margin-left: 5px;
+                            font-size: 12px;
+                            color: #666;
+                            background: none;
+                            border: none;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #6161b7;
+                            }
+                        }
+
+                        .delete-btn:hover {
+                            color: #ff4d4f;
+                        }
                     }
                 }
             }
@@ -276,6 +321,9 @@ export default Vue.extend({
             initPrompts: null,
             versions: [] as Version[],
             currentVersionId: null as string | null,
+            currentWorkspace: null as any,
+            editingVersionId: null as string | null,
+            editingVersionName: "",
         }
     },
     methods: {
@@ -335,7 +383,10 @@ export default Vue.extend({
                 promptEditor.works = version.data.map((prompts: string) => new PromptWork({ initText: prompts }))
                 this.currentVersionId = versionId
                 // 触发更新
-                promptEditor.works.forEach((work) => work.doExportPrompt())
+                this.$nextTick(() => {
+                    promptEditor.works.forEach((work) => work.exportPrompts())
+                    this.saveCurrentWorkspace()
+                })
             }
         },
 
@@ -361,7 +412,48 @@ export default Vue.extend({
             }
         },
 
+        saveCurrentWorkspace() {
+            const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
+            this.currentWorkspace = promptEditor.works.map((w) => w.exportPrompts())
+            localStorage.setItem("currentWorkspace", JSON.stringify(this.currentWorkspace))
+        },
+
+        loadCurrentWorkspace() {
+            const savedWorkspace = localStorage.getItem("currentWorkspace")
+            if (savedWorkspace) {
+                this.currentWorkspace = JSON.parse(savedWorkspace)
+                const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
+                promptEditor.works = this.currentWorkspace.map(
+                    (prompts: string) => new PromptWork({ initText: prompts })
+                )
+            } else {
+                this.createNewVersion()
+            }
+        },
+
+        createNewVersion() {
+            const now = new Date()
+            const versionName = now.toLocaleString()
+            const versionId = now.getTime().toString()
+            const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
+            const versionData = promptEditor.works.map((w) => w.exportPrompts())
+
+            const newVersion: Version = {
+                id: versionId,
+                name: versionName,
+                data: versionData,
+            }
+
+            this.versions.push(newVersion)
+            this.currentVersionId = versionId
+            this.saveVersionsToLocalStorage()
+            this.saveCurrentWorkspace()
+        },
+
         onWorksUpdated(works: string[]) {
+            this.saveCurrentWorkspace()
+
+            // 如果当前有选中的版本，更新该版本的数据
             if (this.currentVersionId) {
                 const currentVersion = this.versions.find((v) => v.id === this.currentVersionId)
                 if (currentVersion) {
@@ -369,6 +461,21 @@ export default Vue.extend({
                     this.saveVersionsToLocalStorage()
                 }
             }
+        },
+
+        startEditingVersion(version: Version) {
+            this.editingVersionId = version.id
+            this.editingVersionName = version.name
+        },
+
+        saveVersionName(versionId: string) {
+            const version = this.versions.find((v) => v.id === versionId)
+            if (version) {
+                version.name = this.editingVersionName
+                this.saveVersionsToLocalStorage()
+            }
+            this.editingVersionId = null
+            this.editingVersionName = ""
         },
     },
     components: {
@@ -378,21 +485,22 @@ export default Vue.extend({
     created() {
         this.getPromptsFromUrlQuery()
         this.loadVersionsFromLocalStorage()
+        this.loadCurrentWorkspace()
     },
-    watch: {
-        "$refs.PromptEditor.promptEditor.works": {
-            handler() {
-                if (this.currentVersionId) {
-                    const currentVersion = this.versions.find((v) => v.id === this.currentVersionId)
-                    if (currentVersion) {
-                        const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
-                        currentVersion.data = promptEditor.works.map((w) => w.exportPrompts())
-                        this.saveVersionsToLocalStorage()
-                    }
-                }
-            },
-            deep: true,
-        },
+    mounted() {
+        window.addEventListener("beforeunload", this.saveCurrentWorkspace)
+
+        // 初始化工作区
+        this.$nextTick(() => {
+            const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
+            if (promptEditor.works.length > 0) {
+                promptEditor.works.forEach((work) => work.exportPrompts())
+                this.saveCurrentWorkspace()
+            }
+        })
+    },
+    beforeDestroy() {
+        window.removeEventListener("beforeunload", this.saveCurrentWorkspace)
     },
 })
 </script>
