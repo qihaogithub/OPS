@@ -228,10 +228,22 @@ export default {
                 globalThis.__OPS_SERVER = val
             },
         },
+        "promptEditor.works": {
+            handler() {
+                this.updateWorks()
+            },
+            deep: true,
+        },
     },
     methods: {
         doDeletePromptWork(promptWork) {
             this.promptEditor.removeWorkspace(promptWork)
+        },
+        updateWorks() {
+            this.$emit(
+                "works-updated",
+                this.promptEditor.works.map((w) => w.exportPrompts())
+            )
         },
     },
     computed: {

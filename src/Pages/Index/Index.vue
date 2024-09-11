@@ -38,7 +38,7 @@
                     <button class="icon dict-button"><Icon icon="mingcute:book-4-fill" /></button>
                 </div>
             </nav>
-            <PromptEditor ref="PromptEditor" :init-prompts="initPrompts" />
+            <PromptEditor ref="PromptEditor" :init-prompts="initPrompts" @works-updated="onWorksUpdated" />
             <section class="PromptDictPad" v-if="needDictPad" v-show="showDictPad">
                 <div class="title">
                     <Icon icon="mingcute:book-4-fill" />
@@ -334,6 +334,8 @@ export default Vue.extend({
                 const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
                 promptEditor.works = version.data.map((prompts: string) => new PromptWork({ initText: prompts }))
                 this.currentVersionId = versionId
+                // 触发更新
+                promptEditor.works.forEach((work) => work.doExportPrompt())
             }
         },
 
@@ -355,6 +357,16 @@ export default Vue.extend({
                 this.versions = JSON.parse(savedVersions)
                 if (this.versions.length > 0) {
                     this.currentVersionId = this.versions[this.versions.length - 1].id
+                }
+            }
+        },
+
+        onWorksUpdated(works: string[]) {
+            if (this.currentVersionId) {
+                const currentVersion = this.versions.find((v) => v.id === this.currentVersionId)
+                if (currentVersion) {
+                    currentVersion.data = works
+                    this.saveVersionsToLocalStorage()
                 }
             }
         },
