@@ -10,10 +10,22 @@
                     <li>
                         <button @click="doCopyWorkspaceUrl"><Icon icon="radix-icons:link-2" /> 复制链接</button>
                     </li>
-                    <!-- 保留原有的菜单项 -->
-                    <li><a href="#">菜单项 1</a></li>
-                    <li><a href="#">菜单项 2</a></li>
-                    <li><a href="#">菜单项 3</a></li>
+                    <li>
+                        <button @click="saveVersion"><Icon icon="radix-icons:bookmark" /> 保存版本</button>
+                    </li>
+                    <!-- 版本列表 -->
+                    <li
+                        v-for="version in versions"
+                        :key="version.id"
+                        :class="{ active: currentVersionId === version.id }"
+                    >
+                        <button @click="loadVersion(version.id)">
+                            <Icon icon="radix-icons:clock" /> {{ version.name }}
+                        </button>
+                        <button class="delete-btn" @click="deleteVersion(version.id)">
+                            <Icon icon="radix-icons:trash" />
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -81,6 +93,15 @@
                         .iconify {
                             margin-right: 8px;
                         }
+                    }
+
+                    &.active {
+                        background-color: #e0e0e0;
+                    }
+
+                    .delete-btn {
+                        margin-left: 5px;
+                        color: #ff4d4f;
                     }
                 }
             }
@@ -233,8 +254,19 @@ import Vue, { PropType } from "vue"
 import vPromptEditor from "../../Compoents/PromptEditor/PromptEditor.vue"
 import vPromptDict from "../../Compoents/PromptDict/PromptDict.vue"
 import { useClipboard } from "@vueuse/core"
+import { PromptWork } from "../../Compoents/PromptEditor/Sub/PromptWork"
+import { PromptEditorClass } from "../../Compoents/PromptEditor/PromptEditorClass"
 
 import pkg from "../../../package.json"
+
+const { copy } = useClipboard({ legacy: true })
+
+interface Version {
+    id: string
+    name: string
+    data: any
+}
+
 export default Vue.extend({
     data() {
         return {
@@ -242,6 +274,8 @@ export default Vue.extend({
             needDictPad: false,
             version: pkg.version,
             initPrompts: null,
+            versions: [] as Version[],
+            currentVersionId: null as string | null,
         }
     },
     methods: {
@@ -274,8 +308,55 @@ export default Vue.extend({
             let prompts = promptEditor.promptEditor.works.map((w: any) => w.exportPrompts())
             let q = encodeURIComponent(JSON.stringify(prompts))
             let url = `${location.origin + location.pathname}?prompts=${q}`
-            const { copy } = useClipboard({ legacy: true })
             copy(url)
+        },
+        saveVersion() {
+            const now = new Date()
+            const versionName = now.toLocaleString()
+            const versionId = now.getTime().toString()
+            const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
+            const versionData = promptEditor.works.map((w) => w.exportPrompts())
+
+            const newVersion: Version = {
+                id: versionId,
+                name: versionName,
+                data: versionData,
+            }
+
+            this.versions.push(newVersion)
+            this.currentVersionId = versionId
+            this.saveVersionsToLocalStorage()
+        },
+
+        loadVersion(versionId: string) {
+            const version = this.versions.find((v) => v.id === versionId)
+            if (version) {
+                const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
+                promptEditor.works = version.data.map((prompts: string) => new PromptWork({ initText: prompts }))
+                this.currentVersionId = versionId
+            }
+        },
+
+        deleteVersion(versionId: string) {
+            this.versions = this.versions.filter((v) => v.id !== versionId)
+            if (this.currentVersionId === versionId) {
+                this.currentVersionId = this.versions.length > 0 ? this.versions[this.versions.length - 1].id : null
+            }
+            this.saveVersionsToLocalStorage()
+        },
+
+        saveVersionsToLocalStorage() {
+            localStorage.setItem("promptVersions", JSON.stringify(this.versions))
+        },
+
+        loadVersionsFromLocalStorage() {
+            const savedVersions = localStorage.getItem("promptVersions")
+            if (savedVersions) {
+                this.versions = JSON.parse(savedVersions)
+                if (this.versions.length > 0) {
+                    this.currentVersionId = this.versions[this.versions.length - 1].id
+                }
+            }
         },
     },
     components: {
@@ -284,6 +365,22 @@ export default Vue.extend({
     },
     created() {
         this.getPromptsFromUrlQuery()
+        this.loadVersionsFromLocalStorage()
+    },
+    watch: {
+        "$refs.PromptEditor.promptEditor.works": {
+            handler() {
+                if (this.currentVersionId) {
+                    const currentVersion = this.versions.find((v) => v.id === this.currentVersionId)
+                    if (currentVersion) {
+                        const promptEditor = (this.$refs.PromptEditor as any).promptEditor as PromptEditorClass
+                        currentVersion.data = promptEditor.works.map((w) => w.exportPrompts())
+                        this.saveVersionsToLocalStorage()
+                    }
+                }
+            },
+            deep: true,
+        },
     },
 })
 </script>
