@@ -1,166 +1,203 @@
 <template>
     <div class="IndexPage">
-        <nav>
-            <a class="logo" href="https://github.com/Moonvy/OpenPromptStudio"><b>OPS</b>/OpenPromptStudio</a>
-            <a class="icon-link" href="https://github.com/Moonvy/OpenPromptStudio" target="_blank">
-                <Icon icon="radix-icons:github-logo"
-            /></a>
+        <!-- 新增左侧菜单 -->
+        <aside class="left-menu">
+            <nav>
+                <ul>
+                    <li><a href="#">菜单项 1</a></li>
+                    <li><a href="#">菜单项 2</a></li>
+                    <li><a href="#">菜单项 3</a></li>
+                </ul>
+            </nav>
+        </aside>
 
-            <div class="dict-button-box" @click="toggleDictPad()">
-                提示词词典
-                <button class="icon dict-button"><Icon icon="mingcute:book-4-fill" /></button>
-            </div>
-        </nav>
-        <PromptEditor ref="PromptEditor" :init-prompts="initPrompts" />
-        <section class="PromptDictPad" v-if="needDictPad" v-show="showDictPad">
-            <div class="title">
-                <Icon icon="mingcute:book-4-fill" />
-                提示词词典
-                <!--                <a class="github-dict" href="https://github.com/Moonvy/OpenPromptStudio" target="_blank">-->
-                <!--                    <Icon icon="radix-icons:github-logo" />一起维护词典</a-->
-                <!--                >-->
-                <button class="icon close-button" @click="toggleDictPad(false)">
-                    <Icon icon="radix-icons:cross-1" />
-                </button>
-            </div>
-            <PromptDict />
-        </section>
-        <footer>
-            <a href="https://github.com/Moonvy/OpenPromptStudio" target="_blank">
-                <img class="icon" src="/icon.svg" /> OpenPromptStudio / v{{ version }} /
-            </a>
-            <a href="https://moonvy.com/?homepage"> made by <img src="./assets/logo_full_cn.svg" /></a>
-        </footer>
+        <!-- 原有内容 -->
+        <div class="main-content">
+            <nav>
+                <div class="dict-button-box" @click="toggleDictPad()">
+                    提示词词典
+                    <button class="icon dict-button"><Icon icon="mingcute:book-4-fill" /></button>
+                </div>
+            </nav>
+            <PromptEditor ref="PromptEditor" :init-prompts="initPrompts" />
+            <section class="PromptDictPad" v-if="needDictPad" v-show="showDictPad">
+                <div class="title">
+                    <Icon icon="mingcute:book-4-fill" />
+                    提示词词典
+                    <!--                <a class="github-dict" href="https://github.com/Moonvy/OpenPromptStudio" target="_blank">-->
+                    <!--                    <Icon icon="radix-icons:github-logo" />一起维护词典</a-->
+                    <!--                >-->
+                    <button class="icon close-button" @click="toggleDictPad(false)">
+                        <Icon icon="radix-icons:cross-1" />
+                    </button>
+                </div>
+                <PromptDict />
+            </section>
+        </div>
     </div>
 </template>
 <style lang="scss">
 .IndexPage {
-    > nav {
-        display: flex;
-        place-items: center;
-        padding-top: 11px;
-        padding-bottom: 20px;
-        padding-left: 23px;
-        padding-right: 14px;
-        .logo {
-            font-family: "JetBrains Mono";
-            color: #9f9f9f;
-            text-shadow: 0 1px 1px #ffffff;
-            display: flex;
-            place-items: center;
-            font-weight: 200;
-            display: flex;
-            place-content: flex-start;
-            text-decoration: none;
-        }
+    display: flex; // 使用 flex 布局
 
-        .icon-link {
-            display: flex;
-            place-items: center;
-            font-size: 18px;
-            color: #888686;
-            text-shadow: 0 1px 1px #ffffff;
-            margin-left: 6px;
-        }
+    .left-menu {
+        width: 200px; // 设置菜单宽度
+        height: 100vh; // 设置菜单高度为全屏
+        background-color: #f0f0f0; // 设置背景色
+        padding: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); // 添加阴影效果
 
-        .dict-button-box {
-            margin-left: auto;
-            display: flex;
-            font-size: 14px;
-            place-items: center;
-            color: #6161b7;
-            text-shadow: 0 1px 1px #ffffff;
-            margin-right: 40px;
-            cursor: pointer;
-        }
-        .dict-button {
-            color: #6161b7;
-            margin-left: 6px;
-            position: fixed;
-            right: 20px;
-            top: 14px;
-            z-index: 50;
+        nav {
+            ul {
+                list-style-type: none;
+                padding: 0;
+
+                li {
+                    margin-bottom: 10px;
+
+                    a {
+                        text-decoration: none;
+                        color: #333;
+                        font-size: 16px;
+
+                        &:hover {
+                            color: #6161b7;
+                        }
+                    }
+                }
+            }
         }
     }
 
-    > footer {
-        display: flex;
-        place-content: flex-end;
-        place-items: center;
-        padding-bottom: 20px;
-        padding-top: 32px;
-        padding-right: 20px;
-        border-top: 1px solid #d7d7d7;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9215686275) inset;
+    .main-content {
+        flex: 1; // 主内容区域占据剩余空间
+        > nav {
+            display: flex;
+            place-items: center;
+            padding-top: 11px;
+            padding-bottom: 20px;
+            padding-left: 23px;
+            padding-right: 14px;
+            .logo {
+                font-family: "JetBrains Mono";
+                color: #9f9f9f;
+                text-shadow: 0 1px 1px #ffffff;
+                display: flex;
+                place-items: center;
+                font-weight: 200;
+                display: flex;
+                place-content: flex-start;
+                text-decoration: none;
+            }
 
-        a {
+            .icon-link {
+                display: flex;
+                place-items: center;
+                font-size: 18px;
+                color: #888686;
+                text-shadow: 0 1px 1px #ffffff;
+                margin-left: 6px;
+            }
+
+            .dict-button-box {
+                margin-left: auto;
+                display: flex;
+                font-size: 14px;
+                place-items: center;
+                color: #6161b7;
+                text-shadow: 0 1px 1px #ffffff;
+                margin-right: 40px;
+                cursor: pointer;
+            }
+            .dict-button {
+                color: #6161b7;
+                margin-left: 6px;
+                position: fixed;
+                right: 20px;
+                top: 14px;
+                z-index: 50;
+            }
+        }
+
+        > footer {
             display: flex;
             place-content: flex-end;
             place-items: center;
-            text-decoration: none;
-            color: #4b4a4a;
-            font-family: "JetBrains Mono";
-            font-size: 13px;
-            img {
-                margin-left: 6px;
-                height: 21px;
-            }
+            padding-bottom: 20px;
+            padding-top: 32px;
+            padding-right: 20px;
+            border-top: 1px solid #d7d7d7;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9215686275) inset;
 
-            .icon {
-                margin-right: 0.5em;
-            }
-
-            &:not(:last-child) {
-                margin-right: 0.5em;
-            }
-        }
-    }
-
-    > .PromptDictPad {
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        top: 0;
-        right: 0;
-        width: 550px;
-        height: 100vh;
-        z-index: 100;
-        max-width: calc(100vw - 100px);
-        background: rgb(247 247 247 / 71%);
-        backdrop-filter: blur(32px);
-        box-shadow: -2px 0 2px #26252512, -2px 0 12px #26252521, -2px 0 64px #0605491f;
-
-        > .title {
-            display: flex;
-            place-items: center;
-            padding: 14px 20px;
-            font-size: 14px;
-            color: #6161b7;
-            text-shadow: 0 1px 1px #ffffff;
-            font-weight: bold;
-            > .iconify {
-                font-size: 22px;
-                margin-right: 8px;
-                filter: drop-shadow(0 1px 1px #ffffff);
-                color: #6161b7;
-            }
-
-            > .close-button {
-                margin-left: auto;
-            }
-
-            .github-dict {
+            a {
                 display: flex;
+                place-content: flex-end;
                 place-items: center;
                 text-decoration: none;
-                margin-left: 12px;
-                font-weight: normal;
-                color: #7a78dc;
-                &:hover {
-                    text-decoration: underline;
+                color: #4b4a4a;
+                font-family: "JetBrains Mono";
+                font-size: 13px;
+                img {
+                    margin-left: 6px;
+                    height: 21px;
                 }
-                .iconify {
-                    margin-right: 4px;
+
+                .icon {
+                    margin-right: 0.5em;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 0.5em;
+                }
+            }
+        }
+
+        > .PromptDictPad {
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            right: 0;
+            width: 550px;
+            height: 100vh;
+            z-index: 100;
+            max-width: calc(100vw - 100px);
+            background: rgb(247 247 247 / 71%);
+            backdrop-filter: blur(32px);
+            box-shadow: -2px 0 2px #26252512, -2px 0 12px #26252521, -2px 0 64px #0605491f;
+
+            > .title {
+                display: flex;
+                place-items: center;
+                padding: 14px 20px;
+                font-size: 14px;
+                color: #6161b7;
+                text-shadow: 0 1px 1px #ffffff;
+                font-weight: bold;
+                > .iconify {
+                    font-size: 22px;
+                    margin-right: 8px;
+                    filter: drop-shadow(0 1px 1px #ffffff);
+                    color: #6161b7;
+                }
+
+                > .close-button {
+                    margin-left: auto;
+                }
+
+                .github-dict {
+                    display: flex;
+                    place-items: center;
+                    text-decoration: none;
+                    margin-left: 12px;
+                    font-weight: normal;
+                    color: #7a78dc;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                    .iconify {
+                        margin-right: 4px;
+                    }
                 }
             }
         }
