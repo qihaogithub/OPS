@@ -1,9 +1,16 @@
 <template>
     <div class="IndexPage">
-        <!-- 新增左侧菜单 -->
+        <!-- 修改左侧菜单 -->
         <aside class="left-menu">
             <nav>
                 <ul>
+                    <li>
+                        <button @click="doAddWorkspace"><Icon icon="radix-icons:card-stack-plus" /> 添加工作区</button>
+                    </li>
+                    <li>
+                        <button @click="doCopyWorkspaceUrl"><Icon icon="radix-icons:link-2" /> 复制链接</button>
+                    </li>
+                    <!-- 保留原有的菜单项 -->
                     <li><a href="#">菜单项 1</a></li>
                     <li><a href="#">菜单项 2</a></li>
                     <li><a href="#">菜单项 3</a></li>
@@ -42,7 +49,7 @@
 
     .left-menu {
         width: 200px; // 设置菜单宽度
-        height: 100vh; // 设置菜单高度为全屏
+        height: 100vh; // 设置菜单度为全屏
         background-color: #f0f0f0; // 设置背景色
         padding: 20px;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); // 添加阴影效果
@@ -55,13 +62,24 @@
                 li {
                     margin-bottom: 10px;
 
+                    button,
                     a {
+                        display: flex;
+                        align-items: center;
                         text-decoration: none;
                         color: #333;
                         font-size: 16px;
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        padding: 0;
 
                         &:hover {
                             color: #6161b7;
+                        }
+
+                        .iconify {
+                            margin-right: 8px;
                         }
                     }
                 }
@@ -214,6 +232,7 @@
 import Vue, { PropType } from "vue"
 import vPromptEditor from "../../Compoents/PromptEditor/PromptEditor.vue"
 import vPromptDict from "../../Compoents/PromptDict/PromptDict.vue"
+import { useClipboard } from "@vueuse/core"
 
 import pkg from "../../../package.json"
 export default Vue.extend({
@@ -245,6 +264,18 @@ export default Vue.extend({
                     console.error(e)
                 }
             }
+        },
+        doAddWorkspace() {
+            const promptEditor = this.$refs.PromptEditor as any
+            promptEditor.promptEditor.addWorkspace()
+        },
+        doCopyWorkspaceUrl() {
+            const promptEditor = this.$refs.PromptEditor as any
+            let prompts = promptEditor.promptEditor.works.map((w: any) => w.exportPrompts())
+            let q = encodeURIComponent(JSON.stringify(prompts))
+            let url = `${location.origin + location.pathname}?prompts=${q}`
+            const { copy } = useClipboard({ legacy: true })
+            copy(url)
         },
     },
     components: {

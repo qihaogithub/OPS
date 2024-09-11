@@ -10,8 +10,9 @@
         </div>
 
         <div class="operate-tool" ref="operate-tool">
-            <button @click="doAddWorkspace"><Icon icon="radix-icons:card-stack-plus" /> 添加工作区</button>
-            <button @click="doCopyWorkspaceUrl"><Icon icon="radix-icons:link-2" /> 复制链接</button>
+            <!-- 删除以下两个按钮 -->
+            <!-- <button @click="doAddWorkspace"><Icon icon="radix-icons:card-stack-plus" /> 添加工作区</button>
+            <button @click="doCopyWorkspaceUrl"><Icon icon="radix-icons:link-2" /> 复制链接</button> -->
 
             <div class="pngout-option checkbox">
                 <input id="ope-expf" type="checkbox" v-model="promptEditor.data.enablePngExportFixed" />
@@ -147,11 +148,12 @@
             <a href="https://nf.video/yinhe/web?sharedId=124758" target="_blank"> <img src="./Assets/ad.png" /> </a>
             <!-- <a href="https://universalbus.cn?s=hd2fCq8xEw" target="_blank"> <img src="./Assets/ad5.jpg" /> </a> -->
 
-            <a href="https://sd-1258045456.cos.ap-guangzhou.myqcloud.com/sd011" target="_blank"> <img src="./Assets/ad6.png" /> </a>
+            <a href="https://sd-1258045456.cos.ap-guangzhou.myqcloud.com/sd011" target="_blank">
+                <img src="./Assets/ad6.png" />
+            </a>
             <!-- <a href="https://www.kaiecho.com/" target="_blank"> <img src="./Assets/ad2.jpg" /> </a> -->
             <!-- <a href="https://sd-1258045456.cos.ap-guangzhou.myqcloud.com/chachasd.html" target="_blank"> <img src="./Assets/ad3c.png" /> </a> -->
         </div>
-       
     </div>
 </template>
 <style lang="scss">
@@ -228,21 +230,6 @@ export default {
         },
     },
     methods: {
-        doAddWorkspace() {
-            this.promptEditor.addWorkspace()
-            setTimeout(() => {
-                this.$refs["operate-tool"].scrollIntoView({
-                    behavior: "smooth",
-                })
-            }, 100)
-        },
-        doCopyWorkspaceUrl() {
-            let prompts = this.promptEditor.works.map((w) => w.exportPrompts())
-            let q = encodeURIComponent(JSON.stringify(prompts))
-            let url = `${location.origin + location.pathname}?prompts=${q}`
-            copy(url)
-        },
-
         doDeletePromptWork(promptWork) {
             this.promptEditor.removeWorkspace(promptWork)
         },
