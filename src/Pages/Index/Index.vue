@@ -1,6 +1,5 @@
 <template>
     <div class="IndexPage">
-        <!-- 修改左侧菜单 -->
         <aside class="left-menu">
             <nav>
                 <ul>
@@ -13,29 +12,37 @@
                     <li>
                         <button @click="saveVersion"><Icon icon="radix-icons:bookmark" /> 保存版本</button>
                     </li>
+
+                    <div class="menu-separator"></div>
+
+                    <div class="versions-title">版本列表</div>
+
                     <!-- 版本列表 -->
                     <li
                         v-for="version in versions"
                         :key="version.id"
                         :class="{ active: currentVersionId === version.id }"
                     >
-                        <div v-if="editingVersionId === version.id" class="version-edit">
-                            <input
-                                v-model="editingVersionName"
-                                @keyup.enter="saveVersionName(version.id)"
-                                @blur="saveVersionName(version.id)"
-                            />
-                        </div>
-                        <button v-else @click="loadVersion(version.id)">
-                            <Icon icon="radix-icons:clock" /> {{ version.name }}
-                        </button>
-                        <div class="version-actions">
-                            <button class="edit-btn" @click="startEditingVersion(version)">
-                                <Icon icon="radix-icons:pencil-1" />
+                        <div class="version-item">
+                            <button @click="loadVersion(version.id)" class="version-button">
+                                <Icon icon="radix-icons:clock" />
+                                <span v-if="editingVersionId !== version.id">{{ version.name }}</span>
+                                <input
+                                    v-else
+                                    v-model="editingVersionName"
+                                    @keyup.enter="saveVersionName(version.id)"
+                                    @blur="saveVersionName(version.id)"
+                                    class="version-edit-input"
+                                />
                             </button>
-                            <button class="delete-btn" @click="deleteVersion(version.id)">
-                                <Icon icon="radix-icons:trash" />
-                            </button>
+                            <div class="version-actions">
+                                <button class="edit-btn" @click="startEditingVersion(version)">
+                                    <Icon icon="radix-icons:pencil-1" />
+                                </button>
+                                <button class="delete-btn" @click="deleteVersion(version.id)">
+                                    <Icon icon="radix-icons:trash" />
+                                </button>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -69,92 +76,151 @@
 </template>
 <style lang="scss">
 .IndexPage {
-    display: flex; // 使用 flex 布局
+    display: flex;
 
     .left-menu {
-        width: 200px; // 设置菜单宽度
-        height: 100vh; // 设置菜单度为全屏
-        background-color: #f0f0f0; // 设置背景色
+        width: 240px;
+        height: 100vh;
+        background-color: #f8f9fa;
         padding: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); // 添加阴影效果
+        box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
 
         nav {
             ul {
                 list-style-type: none;
                 padding: 0;
+                margin: 0;
 
                 li {
-                    margin-bottom: 10px;
+                    margin-bottom: 15px;
 
                     button,
                     a {
                         display: flex;
                         align-items: center;
+                        width: 100%;
+                        padding: 10px;
                         text-decoration: none;
                         color: #333;
-                        font-size: 16px;
+                        font-size: 14px;
                         background: none;
                         border: none;
+                        border-radius: 5px;
                         cursor: pointer;
-                        padding: 0;
+                        transition: background-color 0.2s, color 0.2s;
 
                         &:hover {
+                            background-color: #e9ecef;
                             color: #6161b7;
                         }
 
                         .iconify {
-                            margin-right: 8px;
+                            margin-right: 10px;
+                            font-size: 18px;
                         }
                     }
 
                     &.active {
-                        background-color: #e0e0e0;
-                    }
-
-                    .version-edit {
-                        display: flex;
-                        align-items: center;
-                        margin-right: 5px;
-
-                        input {
-                            width: 100%;
-                            padding: 2px 5px;
-                            font-size: 14px;
-                            border: 1px solid #ccc;
-                            border-radius: 3px;
+                        button {
+                            background-color: #e9ecef;
+                            color: #6161b7;
+                            font-weight: bold;
                         }
                     }
 
-                    .version-actions {
+                    .version-item {
                         display: flex;
                         align-items: center;
+                        justify-content: space-between;
+                        width: 100%;
 
-                        .edit-btn,
-                        .delete-btn {
-                            padding: 2px;
-                            margin-left: 5px;
-                            font-size: 12px;
-                            color: #666;
+                        .version-button {
+                            display: flex;
+                            align-items: center;
+                            flex-grow: 1;
+                            padding: 8px;
+                            text-align: left;
                             background: none;
                             border: none;
                             cursor: pointer;
+                            transition: background-color 0.2s;
 
                             &:hover {
-                                color: #6161b7;
+                                background-color: #e9ecef;
+                            }
+
+                            .iconify {
+                                margin-right: 8px;
                             }
                         }
 
-                        .delete-btn:hover {
-                            color: #ff4d4f;
+                        .version-edit-input {
+                            flex-grow: 1;
+                            padding: 4px 8px;
+                            font-size: 14px;
+                            border: 1px solid #ced4da;
+                            border-radius: 4px;
+
+                            &:focus {
+                                outline: none;
+                                border-color: #6161b7;
+                            }
                         }
+
+                        .version-actions {
+                            display: flex;
+                            align-items: center;
+
+                            .edit-btn,
+                            .delete-btn {
+                                padding: 4px;
+                                font-size: 14px;
+                                color: #6c757d;
+                                background: none;
+                                border: none;
+                                cursor: pointer;
+                                transition: color 0.2s;
+
+                                &:hover {
+                                    color: #6161b7;
+                                }
+                            }
+
+                            .delete-btn:hover {
+                                color: #dc3545;
+                            }
+                        }
+                    }
+
+                    &.active .version-button {
+                        background-color: #e9ecef;
+                        color: #6161b7;
+                        font-weight: bold;
                     }
                 }
             }
         }
+
+        // 添加分隔线
+        .menu-separator {
+            height: 1px;
+            background-color: #dee2e6;
+            margin: 15px 0;
+        }
+
+        // 版本列表标题
+        .versions-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
     }
 
     .main-content {
-        flex: 1; // 主内容区域占据剩余空间
+        flex: 1;
         > nav {
             display: flex;
             place-items: center;
